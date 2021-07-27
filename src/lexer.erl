@@ -376,40 +376,40 @@ yystate(S, Ics, Line, Tlen, Action, Alen) ->
 %% {token,Token} | {end_token, Token} | skip_token | {error,String}.
 %% Generated action function.
 
-yyaction(0, TokenLen, YYtcs, TokenLine) ->
+yyaction(0, TokenLen, YYtcs, _) ->
     TokenChars = yypre(YYtcs, TokenLen),
-    yyaction_0(TokenChars, TokenLine);
-yyaction(1, TokenLen, YYtcs, TokenLine) ->
+    yyaction_0(TokenChars);
+yyaction(1, TokenLen, YYtcs, _) ->
     TokenChars = yypre(YYtcs, TokenLen),
-    yyaction_1(TokenChars, TokenLine);
-yyaction(2, _, _, TokenLine) ->
-    yyaction_2(TokenLine);
-yyaction(3, _, _, TokenLine) ->
-    yyaction_3(TokenLine);
+    yyaction_1(TokenChars);
+yyaction(2, _, _, _) ->
+    yyaction_2();
+yyaction(3, _, _, _) ->
+    yyaction_3();
 yyaction(4, _, _, _) ->
     yyaction_4();
 yyaction(_, _, _, _) -> error.
 
--compile({inline,yyaction_0/2}).
+-compile({inline,yyaction_0/1}).
 -file("src/lexer.xrl", 7).
-yyaction_0(TokenChars, TokenLine) ->
-     { token, { atom, TokenLine, to_atom (TokenChars) } } .
+yyaction_0(TokenChars) ->
+     { token, { atom, to_atom (TokenChars) } } .
 
--compile({inline,yyaction_1/2}).
+-compile({inline,yyaction_1/1}).
 -file("src/lexer.xrl", 8).
-yyaction_1(TokenChars, TokenLine) ->
-     { token, { connective_atom (TokenChars), TokenLine,
+yyaction_1(TokenChars) ->
+     { token, { connective_atom (TokenChars),
      connective_atom (TokenChars) } } .
 
--compile({inline,yyaction_2/1}).
+-compile({inline,yyaction_2/0}).
 -file("src/lexer.xrl", 10).
-yyaction_2(TokenLine) ->
-     { token, { '(', TokenLine } } .
+yyaction_2() ->
+     { token, { '(' } } .
 
--compile({inline,yyaction_3/1}).
+-compile({inline,yyaction_3/0}).
 -file("src/lexer.xrl", 11).
-yyaction_3(TokenLine) ->
-     { token, { ')', TokenLine } } .
+yyaction_3() ->
+     { token, { ')' } } .
 
 -compile({inline,yyaction_4/0}).
 -file("src/lexer.xrl", 12).

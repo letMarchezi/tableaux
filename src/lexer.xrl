@@ -6,11 +6,11 @@ WHITESPACE   = [\s\t\n\r]
 
 Rules.
 
-{ATOM}        : {token, {atom, TokenLine, to_atom(TokenChars)}}.
-{CONNECTIVE}  : {token, {connective_atom(TokenChars), TokenLine,
+{ATOM}        : {token, {atom, to_atom(TokenChars)}}.
+{CONNECTIVE}  : {token, {connective_atom(TokenChars), 
 connective_atom(TokenChars)}}.
-\(            : {token, {'(',  TokenLine}}.
-\)            : {token, {')',  TokenLine}}.
+\(            : {token, {'('}}.
+\)            : {token, {')'}}.
 {WHITESPACE}+ : skip_token.
 
 Erlang code.
