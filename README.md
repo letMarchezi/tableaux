@@ -1,4 +1,4 @@
-# Seq
+# Analytic Tableaux
 
 **TODO: Add description**
 
