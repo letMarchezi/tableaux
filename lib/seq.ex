@@ -1,4 +1,4 @@
-defmodule Seq do
+defmodule AnalyticTableaux do
   @moduledoc """
   Documentation for `Seq`.
   """
