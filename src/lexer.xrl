@@ -1,16 +1,16 @@
 Definitions.
 
-ATOM         = [a-z]
-CONNECTIVE   = -(>)|[&]|[!]|[|] 
+ATOM         = [a-zA-Z]
+CONNECTIVE   = -(>)|[&]|[!]|[~]|[|] 
 WHITESPACE   = [\s\t\n\r]
 
 Rules.
 
-{ATOM}        : {token, {atom, to_atom(TokenChars)}}.
-{CONNECTIVE}  : {token, {connective_atom(TokenChars), 
+{ATOM}        : {token, {atom, TokenLine, to_atom(TokenChars)}}.
+{CONNECTIVE}  : {token, {connective_atom(TokenChars), TokenLine, 
 connective_atom(TokenChars)}}.
-\(            : {token, {'('}}.
-\)            : {token, {')'}}.
+\(            : {token, {'(', TokenLine}}.
+\)            : {token, {')', TokenLine}}.
 {WHITESPACE}+ : skip_token.
 
 Erlang code.
@@ -23,9 +23,16 @@ connective_atom([$&|_]) ->
     
 connective_atom([$!|_]) ->
     'not';
+    
+connective_atom([$~|_]) ->
+    'not';
 
 connective_atom([$||_]) ->
     'or';
     
  connective_atom([$-,$>|_]) ->
-    'implies'. 
+    'implies'.
+
+
+
+
