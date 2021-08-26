@@ -10,18 +10,21 @@ defmodule Tree do
 
   # should return the result [:result => valid/invalid, %Tree{}=> answer]
   def solvingTree(tree), do: solvingTree(tree, tree, %Tree{}) 
-  def solvingTree(current, tree, resolution) do
+  def solvingTree(current, tree, solution) do
    
-    IO.puts("1")
-    newResult = updateResult(resolution, %Tree{value: current.value, left: nil, right: nil})
+    newResult = updateResult(solution, %Tree{value: current.value, left: nil, right: nil})
+    IO.inspect(current, label: "Atual")
+    IO.inspect(tree, label: "Arvore")
     IO.inspect(newResult, label: "Novo resultado:")
-    
+    IO.puts("")
+    IO.puts("")
+     
     cond do 
       closed?(current, tree) ->  [:valid, newResult]
     
-      Rules.hasOperator?(current.value) -> addExpand(current.value, resolution) 
+      Rules.hasOperator?(current.value) -> solvingTree(addExpand(current, solution), tree, newResult)  
 
-      leaf?(current) -> [:invalid, resolution]
+      leaf?(current) -> [:invalid, solution]
       
       true ->  solvingTree(current.left, tree, newResult)
     end
@@ -33,7 +36,7 @@ defmodule Tree do
 
   # it looks for any contradiction in the tree
   def closed?(_, nil), do: false
-  def closed?(current, tree) do 
+  def closed?(current, tree) do
     if contradiction?(current, tree) do 
       true
     else 
@@ -50,31 +53,32 @@ defmodule Tree do
 
   # update the first result
   def updateResult(%Tree{value: nil, right: nil, left: nil} = tree, newResult) do 
-    IO.inspect(tree, label: "folha")
+    #IO.inspect(tree, label: "folha")
     newResult
   end
   # reaches the leaf 
   def updateResult(%Tree{value: v, right: _, left: nil} = tree, newResult) do 
-    IO.inspect(tree, label: "folha")
+    #IO.inspect(tree, label: "folha")
     %Tree{value: v, right: nil, left: newResult}
   end
   # traverse the tree
   def updateResult(%Tree{value: v, right: r, left: l} = tree, newResult) do
-    IO.inspect(tree, label: "caule")
+    #IO.inspect(tree, label: "caule")
     %Tree{value: v, right: r, left: updateResult(l, newResult)}
   end
 
 
 
-  def addExpand(current, %Tree{value: v, right: r, left: l}) when is_nil(r) and is_nil(l) do
-   [ head | tail ] = Rules.expand(current)
-   if Rules.branching?(current) do 
+  def addExpand(current, %Tree{value: v, right: nil, left: l}) when is_nil(l) do
+   [ head | tail ] = Rules.expand(current.value)
+   if Rules.branching?(current.value) do 
       %Tree{value: v, right: head, left: tail}
     else
-      %Tree{value: v, right: r, left: head}
+      %Tree{value: v, right: nil, left: head}
     end
   end 
 
-  def addExpand(current, %Tree{value: v, right: r, left: l}), do: addExpand(current, l)
+  def addExpand(clause, %Tree{value: v, right: r, left: l}), do: 
+  %Tree{value: v, right: r, left: addExpand(clause, l)}
 
 end
